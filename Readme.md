@@ -1,128 +1,195 @@
-<div align="center">
-	<img src="https://readme-typing-svg.herokuapp.com?font=Fira%20Code&amp;size=28&amp;duration=2500&amp;pause=800&amp;color=4F8EF7&amp;center=true&amp;vCenter=true&amp;width=650&amp;lines=Pydantic+v2+Practice+Repository%3BData+Validation+and+Serialization+with+Python" alt="Pydantic v2 Practice Repository — Data Validation and Serialization with Python" width="650" />
+# Pydantic Notes
+
+<div align="center" class="hero">
+
+[![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Pydantic](https://img.shields.io/badge/Pydantic-v2-E92063?logo=pydantic&logoColor=white)](https://docs.pydantic.dev/latest/)
+[![FastAPI Ready](https://img.shields.io/badge/FastAPI-Ready-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+**A practical, example-driven guide to Pydantic v2.**
+
+Created by [Abdullah Asim](https://github.com/AbdullahAsim07)
+
 </div>
 
-<div align="center">
-  
-	<a href="https://www.python.org/">
-		<img src="https://img.shields.io/badge/Python-3.12%2B-blue?logo=python&amp;logoColor=white" alt="Python 3.12+" />
-	</a>
-	<a href="https://docs.pydantic.dev/latest/">
-		<img src="https://img.shields.io/badge/Pydantic-v2.0+-green?logo=pydantic&amp;logoColor=white" alt="Pydantic v2" />
-	</a>
-	<a href="https://fastapi.tiangolo.com/">
-		<img src="https://img.shields.io/badge/FastAPI-Ready-009688?logo=fastapi&amp;logoColor=white" alt="FastAPI Ready" />
-	</a>
-	<a href="LICENSE">
-		<img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License" />
-	</a>
-</div>
+<style>
+.hero { animation: fade-up 0.8s ease-out both; }
+.hero img { transition: transform 0.25s ease, filter 0.25s ease; }
+.hero img:hover { transform: translateY(-4px) scale(1.04); filter: drop-shadow(0 6px 8px rgba(233,32,99,0.25)); }
+.lesson-card { animation: fade-up 0.7s ease-out both; }
+.lesson-card:nth-child(2n) { animation-delay: 0.12s; }
+.lesson-card:nth-child(3n) { animation-delay: 0.24s; }
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero, .lesson-card { animation: none; }
+  .hero img { transition: none; }
+}
+</style>
 
----
+## About
 
-# 📝 Pydantic-Notes
+Pydantic-Notes teaches data validation and serialization through small, focused Python examples. It covers models, constraints, custom validators, computed fields, nested structures, and JSON output.
 
-> **By [`AbdullahAsim07`](https://github.com/AbdullahAsim07)**
-
-Welcome to the **Pydantic-Notes** repository! This project is a hands-on, example-driven guide to mastering data validation, serialization, and advanced modeling with **Pydantic v2**. Each file is a focused lesson, packed with best practices, real-world patterns, and modern Python techniques.
-
----
-
-## 🏗️ Pydantic V2 Data Validation & Serialization Pipeline
+## Validation Pipeline
 
 ```mermaid
 flowchart LR
-		A[📥 Raw Input Data] --> B[🛡️ Before Field Validators]
-		B --> C[🔄 Type Coercion & Field Constraints]
-		C --> D[🧪 After Field Validators]
-		D --> E[🏷️ Model Validators]
-		E --> F[🧮 Computed Fields]
-		F --> G[📤 Serialization (Dict/JSON)]
+    A[Raw Input] --> B[Before Field Validator]
+    B --> C[Type Coercion]
+    C --> D[Field Constraints]
+    D --> E[After Field Validator]
+    E --> F[Model Validator]
+    F --> G[Computed Field]
+    G --> H[Serialization]
 ```
 
----
+## Lessons
 
-## 📂 Repository Structure
+| File | Topic | Concepts |
+|---|---|---|
+| `1.Pydantic.py` | Models and fields | `BaseModel`, `Field`, constraints, defaults |
+| `2.field_validator.py` | Field validation | `@field_validator`, `before`, `after` |
+| `3.model_validator.py` | Cross-field validation | `@model_validator` |
+| `4.compute_validator.py` | Derived values | `@computed_field`, `@property` |
+| `4.nested_model.py` | Nested models | Hierarchical `BaseModel` structures |
+| `serialization.py` | Serialization | `model_dump()`, `model_dump_json()` |
 
-| 📄 **File**              | 🧩 **Core Concept**                | 🏷️ **Key Decorators/Features**                | 🎯 **Learning Outcome**                                      |
-|--------------------------|------------------------------------|-----------------------------------------------|-------------------------------------------------------------|
-| `1.Pydantic.py`          | BaseModel & Field Constraints      | `BaseModel`, `Field`, `Optional`, `List`, `EmailStr` | Type safety, field validation, constraints, defaults         |
-| `2.field_validator.py`   | Field-Level Validation             | `@field_validator` (`mode='before'`, `mode='after'`) | Custom field validation logic, pre/post processing           |
-| `3.model_validator.py`   | Model-Level (Cross-Field) Validation | `@model_validator(mode='after')`              | Enforce rules across multiple fields                        |
-| `4.compute_validator.py` | Computed/Derived Fields            | `@computed_field`, `@property`                 | Dynamic calculations (e.g., BMI)                            |
-| `4.nested_model.py`      | Nested/Hierarchical Models         | Nested `BaseModel` classes                     | Model complex, hierarchical data structures                 |
-| `serialization.py`       | Model Serialization                | `model_dump()`, `model_dump_json()`, options   | Export models to dict/JSON, include/exclude fields          |
+## File Guide
 
----
+<div class="lesson-card">
 
-## 🚀 Quick Start
+### <a name="pydantic"></a>`1.Pydantic.py` — Models and fields
+
+Introduces `BaseModel`, typed attributes, `Field`, defaults, and constraints. It shows how Pydantic converts compatible input values and rejects invalid data using a clear validation error.
+
+**Key concepts:** required and optional fields, numeric ranges, string limits, default values, and model instances.
+
+</div>
+
+<div class="lesson-card">
+
+### `2.field_validator.py` — Field validation
+
+Demonstrates custom validation for individual fields with `@field_validator`. The `before` mode preprocesses raw input, while `after` mode validates or transforms an already coerced value.
+
+**Key concepts:** `before`, `after`, normalization, `strip`, reusable field validators, and raising `ValueError`.
+
+</div>
+
+<div class="lesson-card">
+
+### `3.model_validator.py` — Cross-field validation
+
+Explains `@model_validator` for rules that involve more than one field. It is useful when a model's valid state depends on relationships between values.
+
+**Key concepts:** `mode="before"`, `mode="after"`, cross-field relationships, conditional validation, and complete `BaseModel` instances.
+
+</div>
+
+<div class="lesson-card">
+
+### `4.compute_validator.py` — Computed fields
+
+Shows how to derive values dynamically with `@computed_field` and `@property`. The result is available like a model attribute and can be included in serialized output.
+
+**Key concepts:** derived properties, getter-only values, and serializing calculated data.
+
+</div>
+
+<div class="lesson-card">
+
+### `4.nested_model.py` — Nested models
+
+Builds hierarchical data with nested `BaseModel` classes. Pydantic validates dictionaries and objects recursively and naturally represents JSON-style structures.
+
+**Key concepts:** nested schemas, lists of models, recursive validation, and structured JSON input.
+
+</div>
+
+<div class="lesson-card">
+
+### `serialization.py` — Serialization
+
+Explains how to export validated models to Python dictionaries or JSON. It distinguishes in-memory data from a portable JSON string and can include or exclude fields as needed.
+
+**Key concepts:** `model_dump()`, `model_dump_json()`, field aliases, and JSON-ready output.
+
+</div>
+
+## Quick Start
 
 ```bash
-# 1️⃣ Clone the repository
+# Clone the repository
 git clone https://github.com/AbdullahAsim07/Pydantic-Notes.git
 cd Pydantic-Notes
 
-# 2️⃣ Create & activate a virtual environment
+# Create and activate a virtual environment
 python -m venv .venv
-# On Windows:
+
+# Windows
 .venv\Scripts\activate
-# On macOS/Linux:
+
+# macOS/Linux
 source .venv/bin/activate
 
-# 3️⃣ Install dependencies
+# Install dependencies
 pip install --upgrade pip
 pip install "pydantic[email]"
 
-# 4️⃣ Run any example script
+# Run an example
 python 1.Pydantic.py
 ```
 
----
-
-## 💡 Code Showcase: Patient Model Example
-
-<details>
-<summary>🔎 <b>Expand for a complete Patient Model with Field, Model Validator, and Computed Field</b></summary>
+## Example
 
 ```python
-from pydantic import BaseModel, Field, model_validator, computed_field
 from typing import Optional
 
+from pydantic import BaseModel, Field, computed_field, model_validator
+
+
 class Patient(BaseModel):
-		name: str = Field(..., max_length=50, description="Full name")
-		age: int = Field(..., ge=0, le=120)
-		weight_kg: float = Field(..., gt=0)
-		height_cm: float = Field(..., gt=0)
-		emergency_contact: Optional[str] = Field(None, max_length=15)
+    name: str = Field(..., max_length=50)
+    age: int = Field(..., ge=0, le=120)
+    weight_kg: float = Field(..., gt=0)
+    height_cm: float = Field(..., gt=0)
+    emergency_contact: Optional[str] = Field(None, max_length=15)
 
-		@model_validator(mode='after')
-		def check_emergency_contact(cls, values):
-				age = values.get('age')
-				contact = values.get('emergency_contact')
-				if age is not None and age < 18 and not contact:
-						raise ValueError('Minors must provide an emergency contact.')
-				return values
+    @model_validator(mode="after")
+    def require_emergency_contact(self):
+        if self.age < 18 and not self.emergency_contact:
+            raise ValueError("Minors must provide an emergency contact")
+        return self
 
-		@computed_field
-		@property
-		def bmi(self) -> float:
-				return round(self.weight_kg / ((self.height_cm / 100) ** 2), 2)
+    @computed_field
+    @property
+    def bmi(self) -> float:
+        return round(self.weight_kg / (self.height_cm / 100) ** 2, 2)
 
-# Example usage
-patient = Patient(name="Alice", age=17, weight_kg=60, height_cm=165, emergency_contact="1234567890")
+
+patient = Patient(
+    name="Alice",
+    age=17,
+    weight_kg=60,
+    height_cm=165,
+    emergency_contact="1234567890",
+)
+
 print(patient.bmi)  # 22.04
+print(patient.model_dump())
 ```
 
-</details>
+## License
 
----
-
-## 📄 License
-
-This repository is licensed under the [MIT License](LICENSE).
-
----
+Licensed under the [MIT License](LICENSE).
 
 <div align="center">
-	⭐️ If you found this project helpful, please consider <b>starring</b> the repo!
+
+If this project helped you, consider giving it a ⭐.
+
 </div>
+
